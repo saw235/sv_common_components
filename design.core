@@ -1,0 +1,29 @@
+CAPI=2:
+name: ::my_design:0.1.0
+description: Description of your design
+filesets:
+  rtl:
+    files:
+      - src/design.sv
+    file_type: systemVerilogSource
+
+  tb:
+    files:
+      - testbench/tb_top.sv
+    file_type: systemVerilogSource
+    depend:
+      - pulp-platform::uvm-components:0
+
+targets:
+  sim:
+    default_tool : verilator
+    filesets :
+      - rtl
+      - tb
+    tools:
+      verilator:
+        verilator_options : 
+          - --language 1800-2005
+          - --trace
+          - -Wno-fatal 
+    toplevel : tb_top
