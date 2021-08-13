@@ -6,19 +6,19 @@ module dff_async_rst(
 );
 
 always_ff @(clk) begin
-    if (rst) begin
-        q <= 0;
+    if (intf.rst) begin
+        intf.q <= 0;
     end else begin
-        if (en) begin
-            q <= d;  
+        if (intf.en) begin
+            intf.q <= intf.d;  
         end
     end
 end 
 endmodule
 
-interface dff_interface;
-    input bit d;
-    output bit q;
-    input bit en;
-    input bit rst;
+interface dff_interface(
+    input bit d,
+    output bit q,
+    input bit en,
+    input bit rst);
 endinterface

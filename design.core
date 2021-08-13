@@ -11,19 +11,23 @@ filesets:
     files:
       - testbench/tb_top.sv
     file_type: systemVerilogSource
-    depend:
-      - pulp-platform::uvm-components:0
 
+  verilator_tb:
+    files: 
+      - testbench/sim_main.cpp 
+    file_type : cppSource
+  
 targets:
   sim:
     default_tool : verilator
     filesets :
       - rtl
       - tb
+      - verilator_tb
     tools:
       verilator:
         verilator_options : 
-          - --language 1800-2005
+          - --language 1800-2017
           - --trace
           - -Wno-fatal 
     toplevel : tb_top
