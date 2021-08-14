@@ -4,7 +4,7 @@
 //======================================================================
 
 #include "macro.h"
-
+#include <iostream>
 // Include common routines
 #include <verilated.h> 
 // Include model header, generated from Verilating "top.v"
@@ -24,7 +24,7 @@ int main(int argc, char** argv, char** env) {
     
     tb_top->eval();
 
-    assert(tb_top->o == 3);
+    ASSERT(tb_top->o == 3, "");
 
     tb_top->a = 3;
     tb_top->b = 1;
@@ -32,7 +32,7 @@ int main(int argc, char** argv, char** env) {
     
     tb_top->eval();
 
-    assert(tb_top->o == 1);
+    ASSERT(tb_top->o == 1,"");
 
     tb_top->a = 3;
     tb_top->b = 2;
@@ -40,7 +40,7 @@ int main(int argc, char** argv, char** env) {
     
     tb_top->eval();
 
-    assert(tb_top->o == 2);    
+    ASSERT(tb_top->o == 2, "");    
 
     tb_top->a_4to1mux = 0;
     tb_top->b_4to1mux = 1;
@@ -50,7 +50,7 @@ int main(int argc, char** argv, char** env) {
     
     tb_top->eval();
 
-    assert(tb_top->o_4to1mux == 3);   
+    ASSERT(tb_top->o_4to1mux == 3, "");   
 
     tb_top->a_4to1mux = 0;
     tb_top->b_4to1mux = 1;
@@ -60,7 +60,7 @@ int main(int argc, char** argv, char** env) {
     
     tb_top->eval();
 
-    assert(tb_top->o_4to1mux == 0);   
+    ASSERT(tb_top->o_4to1mux == 0, "");   
 
     tb_top->a_8to1mux = 0;
     tb_top->b_8to1mux = 1;
@@ -74,7 +74,7 @@ int main(int argc, char** argv, char** env) {
     
     tb_top->eval();
 
-    assert(tb_top->o_8to1mux == 4);   
+    ASSERT(tb_top->o_8to1mux == 4, "");   
 
     // Final model cleanup
     tb_top->final();

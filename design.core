@@ -2,12 +2,17 @@ CAPI=2:
 name: xsaw::common-components:0.1.0
 description: Common components in SystemVerilog
 filesets:
-  rtl:
+  rtl_comb:
     files:
-      - src/adder.sv
-      - src/dff.sv
-      - src/mux.sv
-      - src/shifter.sv
+      - src/combinational/adder.sv
+      - src/combinational/mux.sv
+      - src/combinational/shifter.sv
+    file_type: systemVerilogSource
+
+  rtl_seq:
+    files:
+      - src/sequential/dff.sv
+      - src/sequential/gcd.sv
     file_type: systemVerilogSource
 
   verilator_tb_utils:
@@ -34,7 +39,7 @@ targets:
   adder_tb_sim:
     default_tool : verilator
     filesets :
-      - rtl
+      - rtl_comb
       - adder_tb
       - verilator_tb_utils
     tools:
@@ -45,10 +50,24 @@ targets:
           - -Wno-fatal 
     toplevel : tb_top_adder
 
+  mux_tb_sim:
+    default_tool : verilator
+    filesets :
+      - rtl_comb
+      - mux_tb
+      - verilator_tb_utils
+    tools:
+      verilator:
+        verilator_options : 
+          - --language 1800-2017
+          - --trace
+          - -Wno-fatal 
+    toplevel : tb_top_mux
+
   shifter_tb_sim:
     default_tool : verilator
     filesets :
-      - rtl
+      - rtl_comb
       - shifter_tb
       - verilator_tb_utils
     tools:
