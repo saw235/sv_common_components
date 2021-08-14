@@ -1,24 +1,21 @@
-// DESCRIPTION: Verilator: Basic directed testbench for adder.sv
+// DESCRIPTION: Verilator: Basic directed testbench for mux.sv
 //
 // Author : Alan Saw
 //======================================================================
 
+#include "macro.h"
+
 // Include common routines
 #include <verilated.h> 
 // Include model header, generated from Verilating "top.v"
-#include "Vtb_top_adder.h"
-
-#include "macro.h"
-
-void print_res_fulladder(Vtb_top_adder* tbtop);
-void print_res_ripple_2bit(Vtb_top_adder* tb_top);
-void print_res_carry_select_8bit(Vtb_top_adder* tb_top);
+#include "Vtb_top_mux.h"
 
 int main(int argc, char** argv, char** env) {
+
     // Prevent unused variable warnings
     if (false && argc && argv && env) {}
 
-    // Construct the Verilated model, from Vtop.h generated from Verilating "Vtb_top_adder.v"
+    // Construct the Verilated model, from Vtop.h generated from Verilating "top.v"
     Vtb_top_adder* tb_top = new Vtb_top_adder;
 
     int cycles = 0;
@@ -31,9 +28,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum == 0);
-    assert(tb_top->cout == 0);
-    
     print_res_fulladder(tb_top);
 
 
@@ -42,8 +36,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin = 1;
 
     tb_top-> eval();
-    assert(tb_top->sum == 1);
-    assert(tb_top->cout == 1);
     print_res_fulladder(tb_top);
 
     tb_top -> a = 1;
@@ -51,8 +43,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin = 1;
 
     tb_top-> eval();
-    assert(tb_top->sum == 0);
-    assert(tb_top->cout == 1);
     print_res_fulladder(tb_top);
 
     tb_top -> a = 0;
@@ -60,8 +50,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin = 1;
 
     tb_top-> eval();
-    assert(tb_top->sum == 1);
-    assert(tb_top->cout == 0);
     print_res_fulladder(tb_top);
 
     printf("----- end testing 1 bit adder -----\n");
@@ -71,8 +59,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_2bit = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum_2bit == 3);
-    assert(tb_top->cout_2bit == 0);
     print_res_ripple_2bit(tb_top);
 
     tb_top -> a_2bit = 1;
@@ -80,8 +66,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_2bit = 1;
 
     tb_top-> eval();
-    assert(tb_top->sum_2bit == 3);
-    assert(tb_top->cout_2bit == 0);
     print_res_ripple_2bit(tb_top);
 
     tb_top -> a_2bit = 0;
@@ -89,8 +73,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_2bit = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum_2bit == 0);
-    assert(tb_top->cout_2bit == 0);
     print_res_ripple_2bit(tb_top);
 
 
@@ -99,8 +81,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_2bit = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum_2bit == 0);
-    assert(tb_top->cout_2bit == 1);
     print_res_ripple_2bit(tb_top);
 
 
@@ -109,8 +89,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_2bit = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum_2bit == 2);
-    assert(tb_top->cout_2bit == 0);
     print_res_ripple_2bit(tb_top);
 
 
@@ -122,8 +100,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_8bit = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum_8bit == 3);
-    assert(tb_top->cout_8bit == 0);
     print_res_carry_select_8bit(tb_top);
 
     tb_top -> a_8bit = 1;
@@ -131,8 +107,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_8bit = 1;
 
     tb_top-> eval();
-    assert(tb_top->sum_8bit == 3);
-    assert(tb_top->cout_8bit == 0);
     print_res_carry_select_8bit(tb_top);
 
     tb_top -> a_8bit = 0;
@@ -140,8 +114,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_8bit = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum_8bit == 0);
-    assert(tb_top->cout_8bit == 0);    
     print_res_carry_select_8bit(tb_top);
 
 
@@ -150,8 +122,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_8bit = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum_8bit == 4);
-    assert(tb_top->cout_8bit == 0);
     print_res_carry_select_8bit(tb_top);
 
 
@@ -160,8 +130,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_8bit = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum_8bit == 2);
-    assert(tb_top->cout_8bit == 0);
     print_res_carry_select_8bit(tb_top);
 
     tb_top -> a_8bit = 4;
@@ -169,8 +137,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_8bit = 1;
 
     tb_top-> eval();
-    assert(tb_top->sum_8bit == 9);
-    assert(tb_top->cout_8bit == 0);
     print_res_carry_select_8bit(tb_top);
 
     tb_top -> a_8bit = 4;
@@ -178,8 +144,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_8bit = 0;
 
     tb_top-> eval();
-    assert(tb_top->sum_8bit == 6);
-    assert(tb_top->cout_8bit == 0);
     print_res_carry_select_8bit(tb_top);
 
     tb_top -> a_8bit = 255;
@@ -187,8 +151,6 @@ int main(int argc, char** argv, char** env) {
     tb_top -> cin_8bit = 1;
 
     tb_top-> eval();
-    assert(tb_top->sum_8bit == 255);
-    assert(tb_top->cout_8bit == 1);
     print_res_carry_select_8bit(tb_top);
     printf("----- end testing 8 bit adder -----\n");
     // Final model cleanup

@@ -27,6 +27,44 @@ module full_adder(
     end
 endmodule
 
+module carry_select_adder_8bit (full_adder_intf.dut intf);
+    localparam BITWIDTH = 4 ;
+    full_adder_intf #(BITWIDTH) fa_lo_if;
+    full_adder_intf #(BITWIDTH) fa_hi_cin0_if;
+    full_adder_intf #(BITWIDTH) fa_hi_cin1_if;
+
+    ripple_adder_generic #(BITWIDTH) fa_lo(fa_lo_if);
+    ripple_adder_generic #(BITWIDTH) fa_hi_cin_0(fa_hi_cin0_if);
+    ripple_adder_generic #(BITWIDTH) fa_hi_cin_1(fa_hi_cin1_if);
+
+    assign fa_lo_if.a = intf.a[BITWIDTH-1:0];
+    assign fa_lo_if.b = intf.b[BITWIDTH-1:0];
+    assign fa_lo_if.cin = intf.cin;
+
+    assign intf.s[BITWIDTH-1:0] = fa_lo_if.s; 
+
+    assign fa_hi_cin0_if.a = intf.a[BITWIDTH*2-1:BITWIDTH];
+    assign fa_hi_cin0_if.b = intf.b[BITWIDTH*2-1:BITWIDTH];
+    assign fa_hi_cin0_if.cin = 1'b0;
+
+    assign fa_hi_cin1_if.a = intf.a[BITWIDTH*2-1:BITWIDTH];
+    assign fa_hi_cin1_if.b = intf.b[BITWIDTH*2-1:BITWIDTH];
+    assign fa_hi_cin1_if.cin = 1'b1;
+
+    always_comb begin
+        unique case (fa_lo_if.cout)
+            1'b0 : intf.cout = fa_hi_cin0_if.cout;
+            1'b1 : intf.cout = fa_hi_cin1_if.cout;
+        endcase
+
+        unique case (fa_lo_if.cout)
+            1'b0 : intf.s[BITWIDTH*2-1:BITWIDTH] = fa_hi_cin0_if.s;
+            1'b1 : intf.s[BITWIDTH*2-1:BITWIDTH] = fa_hi_cin1_if.s;
+        endcase
+    end
+ 
+endmodule
+
 module ripple_adder_generic #(parameter int BITWIDTH = 4) (full_adder_intf.dut intf);
     genvar fa_i;
     generate

@@ -1,14 +1,10 @@
-This repository contains the common digital design modules such as adders, multiplers, decoders, encoders, pwm, filters etc in both SystemVerilog and BlueSpecVerilog
+This repository contains the common digital design modules such as adders, multiplers, decoders, encoders, pwm, filters etc in SystemVerilog
 
 ## Getting started
 
 ### Dependencies (For SystemVerilog)
 - Install Verilator >= v4.0 (See https://verilator.org/guide/latest/install.html)
 - Fusesoc >= 1.12 (See https://fusesoc.readthedocs.io/en/stable/user/installation.html)
-
-### Dependencies (For BlueSpec)
-- Install BSV (See https://github.com/B-Lang-org/bsc#documentation)
-
 
 Tested on Linux Ubuntu
 
