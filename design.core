@@ -10,21 +10,15 @@ filesets:
 
   adder_tb:
     files:
-      - testbench/tb_top_adder.sv
-    file_type: systemVerilogSource
+      - testbench/adder/tb_top_adder.sv : {file_type: systemVerilogSource}
+      - testbench/adder/sim_main.cpp : {file_type: cppSource} 
 
-  verilator_tb:
-    files: 
-      - testbench/sim_main.cpp 
-    file_type : cppSource
-  
 targets:
   adder_tb_sim:
     default_tool : verilator
     filesets :
       - rtl
       - adder_tb
-      - verilator_tb
     tools:
       verilator:
         verilator_options : 

@@ -1,2 +1,3 @@
-fusesoc_libraries
+fusesoc_libraries/
+build/
 fusesoc.conf
