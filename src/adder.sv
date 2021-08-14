@@ -11,7 +11,7 @@ module half_adder(
 endmodule
 
 module full_adder(
-    full_adder_intf intf
+    full_adder_intf.dut intf
 );
 
     logic s_ha1;
@@ -27,11 +27,77 @@ module full_adder(
     end
 endmodule
 
-interface full_adder_intf(
-    input logic a,
-    input logic b,
-    input logic cin,
-    output logic s,
-    output logic cout
-);
+module ripple_adder_generic #(parameter int BITWIDTH = 4) (full_adder_intf.dut intf);
+    genvar fa_i;
+    generate
+        // if it just a single bit
+        // reuse fa
+        if (BITWIDTH == 1) begin
+            full_adder fa(intf);
+        end else begin
+
+            // else instantiate the interface n times
+            // and 1 bit adder n times
+            for (fa_i = 0; fa_i < BITWIDTH; fa_i=fa_i+1) begin : fa 
+                full_adder_intf #(1) fa_n_intf;
+                full_adder fa_n(.intf(fa_n_intf));
+            end
+
+            // connects them
+            for (fa_i = 0; fa_i < BITWIDTH; fa_i=fa_i+1) begin
+                
+                // connects to io pins
+                assign fa[fa_i].fa_n_intf.a = intf.a[fa_i];
+                assign fa[fa_i].fa_n_intf.b = intf.b[fa_i];
+                assign intf.s[fa_i] = fa[fa_i].fa_n_intf.s;
+
+                // connects the cin to cout
+                if (fa_i != BITWIDTH-1) begin
+                    assign fa[fa_i+1].fa_n_intf.cin = fa[fa_i].fa_n_intf.cout;
+                end
+            end
+
+            // connects the edge cin and cout
+            assign fa[0].fa_n_intf.cin = intf.cin;
+            assign intf.cout = fa[BITWIDTH-1].fa_n_intf.cout;
+
+        end 
+    endgenerate
+endmodule
+
+module ripple_adder_2bit(
+    full_adder_intf.dut intf
+);    
+
+    full_adder_intf #(1) fa1_intf;
+    full_adder_intf #(1) fa2_intf;
+
+    assign fa1_intf.a = intf.a[0];
+    assign fa2_intf.a = intf.a[1];
+
+    assign fa1_intf.b = intf.b[0];
+    assign fa2_intf.b = intf.b[1];
+
+    assign intf.s[0] = fa1_intf.s;
+    assign intf.s[1] = fa2_intf.s;
+
+    assign fa1_intf.cin = intf.cin;
+    assign fa2_intf.cin = fa1_intf.cout;
+
+    assign intf.cout = fa2_intf.cout;
+
+    full_adder fa1(.intf(fa1_intf));
+    full_adder fa2(.intf(fa2_intf));
+
+endmodule
+
+interface full_adder_intf #(parameter int BITWIDTH = 1);
+    logic[BITWIDTH-1:0] a;
+    logic[BITWIDTH-1:0] b;
+    logic[BITWIDTH-1:0] s;
+    logic cin;
+    logic cout;
+
+    modport dut (input a, b, cin,
+                        output s, cout);
 endinterface //full_adder_intf
