@@ -2,16 +2,13 @@ CAPI=2:
 name: xsaw::common-components:0.1.0
 description: Common components in SystemVerilog
 filesets:
-  rtl_comb:
+  rtl:
     files:
       - src/combinational/adder.sv
       - src/combinational/mux.sv
       - src/combinational/shifter.sv
-    file_type: systemVerilogSource
-
-  rtl_seq:
-    files:
       - src/sequential/dff.sv
+      - src/sequential/regfile.sv
       # - src/sequential/gcd.sv
     file_type: systemVerilogSource
 
@@ -20,10 +17,15 @@ filesets:
       - testbench/macro.h : {is_include_file: true} 
     file_type: cppSource 
 
-  seq_tb:
+  dff_tb:
     files:
       - testbench/sequential/dff/tb_top_dff.sv : {file_type: systemVerilogSource}
       - testbench/sequential/sim_main.cpp : {file_type: cppSource}
+
+  regfile_tb:
+    files:
+      - testbench/sequential/regfile/tb_top_regfile.sv : {file_type: systemVerilogSource}
+      - testbench/sequential/sim_main.cpp : {file_type: cppSource}      
 
   adder_tb:
     files:
@@ -44,7 +46,7 @@ targets:
   adder_tb_sim:
     default_tool : verilator
     filesets :
-      - rtl_comb
+      - rtl
       - adder_tb
       - verilator_tb_utils
     tools:
@@ -58,7 +60,7 @@ targets:
   mux_tb_sim:
     default_tool : verilator
     filesets :
-      - rtl_comb
+      - rtl
       - mux_tb
       - verilator_tb_utils
     tools:
@@ -72,7 +74,7 @@ targets:
   shifter_tb_sim:
     default_tool : verilator
     filesets :
-      - rtl_comb
+      - rtl
       - shifter_tb
       - verilator_tb_utils
     tools:
@@ -86,8 +88,22 @@ targets:
   dff_tb_sim:
     default_tool : verilator
     filesets :
-      - rtl_seq
-      - seq_tb
+      - rtl
+      - dff_tb
+      - verilator_tb_utils
+    tools:
+      verilator:
+        verilator_options : 
+          - --language 1800-2017
+          - --trace
+          - -Wno-fatal 
+    toplevel : tb_top    
+
+  regfile_tb_sim:
+    default_tool : verilator
+    filesets :
+      - rtl
+      - regfile_tb
       - verilator_tb_utils
     tools:
       verilator:

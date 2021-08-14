@@ -3,7 +3,7 @@ module tb_top(
 );
 
     logic q;
-    logic rst;
+    logic rst_n;
     logic d;
     logic en;  
 
@@ -12,7 +12,7 @@ module tb_top(
         .d(d),
         .q(q),
         .en(en),
-        .rst(rst)
+        .rst_n(rst_n)
     ); 
     
     int count = 0;
@@ -21,7 +21,7 @@ module tb_top(
     initial begin        
         d <= 0;
         en <= 1;
-        rst <= 1;
+        rst_n <= 0; // active - low 
     end
 
     always @(posedge clk) begin
@@ -31,7 +31,7 @@ module tb_top(
                 d <= 1;
             end
             3 : begin
-                rst <= 0;
+                rst_n <= 1;
             end
             5 : begin
                 en <= 0;
@@ -44,7 +44,7 @@ module tb_top(
                 d <= 1;
             end
             9 : begin
-                rst <= 1;
+                rst_n <= 0;
             end
         endcase 
 
