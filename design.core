@@ -12,7 +12,7 @@ filesets:
   rtl_seq:
     files:
       - src/sequential/dff.sv
-      - src/sequential/gcd.sv
+      # - src/sequential/gcd.sv
     file_type: systemVerilogSource
 
   verilator_tb_utils:
@@ -20,20 +20,25 @@ filesets:
       - testbench/macro.h : {is_include_file: true} 
     file_type: cppSource 
 
+  seq_tb:
+    files:
+      - testbench/sequential/dff/tb_top_dff.sv : {file_type: systemVerilogSource}
+      - testbench/sequential/sim_main.cpp : {file_type: cppSource}
+
   adder_tb:
     files:
-      - testbench/adder/tb_top_adder.sv : {file_type: systemVerilogSource}
-      - testbench/adder/sim_main.cpp : {file_type: cppSource} 
+      - testbench/combinational/adder/tb_top_adder.sv : {file_type: systemVerilogSource}
+      - testbench/combinational/sim_main.cpp : {file_type: cppSource} 
 
   mux_tb:
     files:
-      - testbench/mux/tb_top_mux.sv : {file_type: systemVerilogSource}
-      - testbench/mux/sim_main.cpp : {file_type: cppSource} 
+      - testbench/combinational/mux/tb_top_mux.sv : {file_type: systemVerilogSource}
+      - testbench/combinational/mux/sim_main.cpp : {file_type: cppSource} 
 
   shifter_tb:
     files:
-      - testbench/shifter/tb_top_shifter.sv : {file_type: systemVerilogSource}
-      - testbench/shifter/sim_main.cpp : {file_type: cppSource} 
+      - testbench/combinational/shifter/tb_top_shifter.sv : {file_type: systemVerilogSource}
+      - testbench/combinational/shifter/sim_main.cpp : {file_type: cppSource} 
 
 targets:
   adder_tb_sim:
@@ -77,3 +82,17 @@ targets:
           - --trace
           - -Wno-fatal 
     toplevel : tb_top_shifter
+
+  dff_tb_sim:
+    default_tool : verilator
+    filesets :
+      - rtl_seq
+      - seq_tb
+      - verilator_tb_utils
+    tools:
+      verilator:
+        verilator_options : 
+          - --language 1800-2017
+          - --trace
+          - -Wno-fatal 
+    toplevel : tb_top    
