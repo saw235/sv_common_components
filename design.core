@@ -18,6 +18,7 @@ filesets:
     files:
       - testbench/adder/tb_top_adder.sv : {file_type: systemVerilogSource}
       - testbench/adder/sim_main.cpp : {file_type: cppSource} 
+
   mux_tb:
     files:
       - testbench/mux/tb_top_mux.sv : {file_type: systemVerilogSource}
@@ -36,3 +37,17 @@ targets:
           - --trace
           - -Wno-fatal 
     toplevel : tb_top_adder
+
+  mux_tb_sim:
+    default_tool : verilator
+    filesets :
+      - rtl
+      - mux_tb
+      - verilator_tb_utils
+    tools:
+      verilator:
+        verilator_options : 
+          - --language 1800-2017
+          - --trace
+          - -Wno-fatal 
+    toplevel : tb_top_mux
