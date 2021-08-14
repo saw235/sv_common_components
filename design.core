@@ -1,6 +1,6 @@
 CAPI=2:
-name: ::riscv-sv:0.1.0
-description: Description of your design
+name: xsaw::common-components:0.1.0
+description: Common components in SystemVerilog
 filesets:
   rtl:
     files:
