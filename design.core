@@ -7,6 +7,7 @@ filesets:
       - src/adder.sv
       - src/dff.sv
       - src/mux.sv
+      - src/shifter.sv
     file_type: systemVerilogSource
 
   verilator_tb_utils:
@@ -23,6 +24,12 @@ filesets:
     files:
       - testbench/mux/tb_top_mux.sv : {file_type: systemVerilogSource}
       - testbench/mux/sim_main.cpp : {file_type: cppSource} 
+
+  shifter_tb:
+    files:
+      - testbench/shifter/tb_top_shifter.sv : {file_type: systemVerilogSource}
+      - testbench/shifter/sim_main.cpp : {file_type: cppSource} 
+
 targets:
   adder_tb_sim:
     default_tool : verilator
@@ -38,11 +45,11 @@ targets:
           - -Wno-fatal 
     toplevel : tb_top_adder
 
-  mux_tb_sim:
+  shifter_tb_sim:
     default_tool : verilator
     filesets :
       - rtl
-      - mux_tb
+      - shifter_tb
       - verilator_tb_utils
     tools:
       verilator:
@@ -50,4 +57,4 @@ targets:
           - --language 1800-2017
           - --trace
           - -Wno-fatal 
-    toplevel : tb_top_mux
+    toplevel : tb_top_shifter
