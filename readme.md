@@ -18,7 +18,7 @@ fusesoc library add common-components .
 fusesoc library add fusesoc-cores https://github.com/fusesoc/fusesoc-cores
 
 # Runs simulation
-fusesoc run --target=sim my_design
+fusesoc run --target=adder_tb_sim xsaw::commoncomponents
 ```
 
 ### To integrate to your design (SystemVerilog)
