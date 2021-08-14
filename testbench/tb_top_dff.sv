@@ -2,11 +2,8 @@ module tb_top(
     input logic clk,
     input logic rst,
     input logic d,
-    input logic en
+    input logic en    
 );
-    
-    bit q;
-    bit d;
     
     dff_interface intf(.d(d), .q(q), .rst(rst), .en(en));
 
@@ -26,7 +23,7 @@ module tb_top(
         print_result();
     end
 
-    task print_result(); 
+    task print_result_dff(); 
         $display("---------------");
         $display("cycle = %d", count);
         $display("d = %b", d);

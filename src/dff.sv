@@ -1,6 +1,5 @@
 // Replace this with your design
-
-module dff_async_rst(
+module dff_async_rst (
     input bit clk,
     dff_interface intf
 );
@@ -16,9 +15,9 @@ always_ff @(clk) begin
 end 
 endmodule
 
-interface dff_interface(
-    input bit d,
-    output bit q,
+interface dff_interface (
+    input bit[DWIDTH-1:0] d,
+    output bit[DWIDTH-1:0] q,
     input bit en,
     input bit rst);
 endinterface

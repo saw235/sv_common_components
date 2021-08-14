@@ -1,15 +1,16 @@
 CAPI=2:
-name: ::my_design:0.1.0
+name: ::riscv-sv:0.1.0
 description: Description of your design
 filesets:
   rtl:
     files:
-      - src/design.sv
+      - src/adder.sv
+      - src/dff.sv
     file_type: systemVerilogSource
 
-  tb:
+  adder_tb:
     files:
-      - testbench/tb_top.sv
+      - testbench/tb_top_adder.sv
     file_type: systemVerilogSource
 
   verilator_tb:
@@ -18,11 +19,11 @@ filesets:
     file_type : cppSource
   
 targets:
-  sim:
+  adder_tb_sim:
     default_tool : verilator
     filesets :
       - rtl
-      - tb
+      - adder_tb
       - verilator_tb
     tools:
       verilator:
@@ -30,4 +31,4 @@ targets:
           - --language 1800-2017
           - --trace
           - -Wno-fatal 
-    toplevel : tb_top
+    toplevel : tb_top_adder
