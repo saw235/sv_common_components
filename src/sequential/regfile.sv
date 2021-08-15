@@ -12,7 +12,6 @@ interface regfile_if #(parameter N = 32, parameter DWIDTH = 32);
               write_en,
         output read_data 
     );
-
 endinterface
 
 module regfile_sync_rst #(

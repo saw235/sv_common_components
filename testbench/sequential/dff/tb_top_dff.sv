@@ -7,7 +7,7 @@ module tb_top(
     logic d;
     logic en;  
 
-    dff_sync_rst dff(
+    dff_sync_rst_en dff(
         .clk(clk),
         .d(d),
         .q(q),
